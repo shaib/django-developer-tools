@@ -1,0 +1,31 @@
+#! /bin/bash
+
+# A git subcommand to cherry-pick a commit onto a stable branch
+#
+# Executes cherry-pick, but also edits the commit message to add
+# a [BRANCH] prefix on the first line, and a "Backport of ..."
+# line at the message's end.
+#
+# Usage:
+# Put this file somewhere on your path and make it executable.
+# Then, when you want to backport a fix from master:
+#
+# $ git djcp $commit
+#
+
+BRANCH_NAME=`git branch | sed -n '/\* stable\//s///p'`
+REV=$1
+# git-branch output is wrapped in echo to remove whitespace
+ORIGBRANCH=`echo $(git branch --contains ${REV})`
+
+echo Cherry picking from $ORIGBRANCH into $BRANCH_NAME
+
+# sed script to add branch name as prefix and backport-notice as suffix
+SED_SCRIPT="1 s/^/[${BRANCH_NAME}] /"'
+$ a\
+\
+Backport of '"${REV:0:10} from $ORIGBRANCH"
+
+# Cherry-pick, editing commit message.
+# Shell quote quoting is a PITA.
+GIT_EDITOR='sed -i "'"${SED_SCRIPT}"'"' git cherry-pick -e ${REV}
