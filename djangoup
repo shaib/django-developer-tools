@@ -1,6 +1,7 @@
 #!/bin/bash
 git fetch upstream && \
-    git checkout stable/1.11.x && git merge --ff-only upstream/stable/1.11.x &&     git checkout stable/1.10.x && git merge --ff-only upstream/stable/1.10.x && \
-    git checkout stable/1.9.x && git merge --ff-only upstream/stable/1.9.x && \
+    git checkout stable/2.0.x && git merge --ff-only upstream/stable/2.0.x && \
+    git checkout stable/1.11.x && git merge --ff-only upstream/stable/1.11.x && \
+    git checkout stable/1.10.x && git merge --ff-only upstream/stable/1.10.x && \
     git checkout stable/1.8.x && git merge --ff-only upstream/stable/1.8.x && \
     git checkout master && git merge --ff-only upstream/master
